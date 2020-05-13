@@ -1,9 +1,13 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/plz', (req, res) => {
-    console.log('sup');
+    console.log('butt');
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ happycat: `buttdump` }));
 })
 
 app.listen(3001, () => {
