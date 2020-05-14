@@ -4,9 +4,8 @@ import './App.css';
 import TextField from '@material-ui/core/TextField';
 // import Autocomplete from '@material-ui/lab/Autocomplete';
 import {Container, Row, Col} from 'react-bootstrap';
-import {Map} from './components/Map'
-
-
+import Map from './components/Map'
+import Forecast from './components/Forecast'
 
 class App extends React.Component {
   constructor(props) {
@@ -62,12 +61,10 @@ class App extends React.Component {
                     <Map city={this.state.location.city} coordinates={this.state.location.coordinates}></Map>
                 </Col>
             </Row>
-
+            <Row>
+                <Forecast forecast={this.state.forecast}></Forecast>
+            </Row>
           </Container>
-
-
-
-                {JSON.stringify(this.state.forecast, null, 4)}
 
         </div>
       );

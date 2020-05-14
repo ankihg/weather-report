@@ -9,7 +9,7 @@ import {
 
 const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
 
-export class Map extends React.Component {
+export default class Map extends React.Component {
     render() {
         return (
             <ComposableMap style={{width: "600px", height: "400px"}}>
