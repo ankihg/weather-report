@@ -4,10 +4,11 @@ const Weatherman = require('./Weatherman');
 const app = express();
 const weatherman = new Weatherman(process.env.owmApiKey);
 
-app.get('/plz', (req, res) => {
+app.get('/forecast', (req, res) => {
     console.log('butt');
-
-    weatherman.getForecast('Seattle')
+    console.log(req.query);
+    // TODO check query params
+    weatherman.getForecast(req.query.city, req.query.units)
         .then((forecast) => {
             console.log(forecast);
             res.setHeader('Content-Type', 'application/json');
