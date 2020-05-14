@@ -4,6 +4,16 @@ import './App.css';
 import TextField from '@material-ui/core/TextField';
 // import Autocomplete from '@material-ui/lab/Autocomplete';
 
+import {
+  ComposableMap,
+  Geographies,
+  Geography,
+  Marker
+} from "react-simple-maps";
+
+const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
+
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -38,8 +48,6 @@ class App extends React.Component {
       return (
         <div className="App">
           <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-
             <TextField label="City" margin="normal" variant="outlined"
                 value={this.state.city}
                 onChange={this.updateCity.bind(this)}
@@ -51,6 +59,29 @@ class App extends React.Component {
                 />
 
                 {JSON.stringify(this.state.forecast, null, 4)}
+
+                <ComposableMap style={{width: "600px", height: "400px"}}>
+                    <Geographies geography={geoUrl}>
+                      {({ geographies }) =>
+                        geographies.map(geo => <Geography key={geo.rsmKey} geography={geo} />)
+                      }
+                    </Geographies>
+
+
+                    {
+                        this.state.forecast.loc &&
+                        <Marker key={this.state.forecast.loc.city} coordinates={this.state.forecast.loc.coordinates}>
+                          <circle r={10} fill="#F00" stroke="#fff" strokeWidth={2} />
+                          <text
+                            textAnchor="middle"
+                            y={15}
+                            style={{ fontFamily: "system-ui", fill: "#5D5A6D" }}>
+                            {this.state.forecast.loc.city}
+                          </text>
+                        </Marker>
+                    }
+
+                </ComposableMap>
 
           </header>
         </div>

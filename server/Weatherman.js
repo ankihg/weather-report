@@ -11,6 +11,10 @@ module.exports = class Weatherman {
                 .then((resp) => {
                     console.log(resp);
                     resolve({
+                        loc: {
+                            city: resp.name,
+                            coordinates: [resp.coord.lon, resp.coord.lat],
+                        },
                         desc: resp.weather[0] && resp.weather[0].description,
                         temp: {
                             now: resp.main.temp,
