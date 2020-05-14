@@ -4,15 +4,8 @@ import './App.css';
 import TextField from '@material-ui/core/TextField';
 // import Autocomplete from '@material-ui/lab/Autocomplete';
 import {Container, Row, Col} from 'react-bootstrap';
+import {Map} from './components/Map'
 
-import {
-  ComposableMap,
-  Geographies,
-  Geography,
-  Marker
-} from "react-simple-maps";
-
-const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
 
 
 class App extends React.Component {
@@ -23,25 +16,29 @@ class App extends React.Component {
 
     getInitialState() {
        return {
-         city: '',
+         cityInput: '',
          units: 'metric',
+         location: {},
          forecast: {},
        }
      }
 
      updateCity(evt) {
         this.setState({
-          city: evt.target.value,
+          cityInput: evt.target.value,
         });
      }
 
     getForecast() {
-        console.log(this.state.city);
-        fetch(`/forecast?city=${this.state.city}&units=${this.state.units}`)
+        console.log(this.state.cityInput);
+        fetch(`/forecast?city=${this.state.cityInput}&units=${this.state.units}`)
           .then(response => response.json())
-          .then((forecast) => {
-              console.log(forecast);
-              this.setState({ forecast })
+          .then((response) => {
+              console.log(response);
+              this.setState({
+                forecast: response.forecast,
+                location: response.location,
+            });
           });
     }
 
@@ -62,28 +59,7 @@ class App extends React.Component {
                         />
                 </Col>
                 <Col xs={6} md={8}>
-                    <ComposableMap style={{width: "600px", height: "400px"}}>
-                        <Geographies geography={geoUrl}>
-                          {({ geographies }) =>
-                            geographies.map(geo => <Geography key={geo.rsmKey} geography={geo} />)
-                          }
-                        </Geographies>
-
-
-                        {
-                            this.state.forecast.loc &&
-                            <Marker key={this.state.forecast.loc.city} coordinates={this.state.forecast.loc.coordinates}>
-                              <circle r={10} fill="#F00" stroke="#fff" strokeWidth={2} />
-                              <text
-                                textAnchor="middle"
-                                y={15}
-                                style={{ fontFamily: "system-ui", fill: "#5D5A6D" }}>
-                                {this.state.forecast.loc.city}
-                              </text>
-                            </Marker>
-                        }
-
-                    </ComposableMap>
+                    <Map city={this.state.location.city} coordinates={this.state.location.coordinates}></Map>
                 </Col>
             </Row>
 

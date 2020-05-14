@@ -11,17 +11,19 @@ module.exports = class Weatherman {
                 .then((resp) => {
                     console.log(resp);
                     resolve({
-                        loc: {
+                        location: {
                             city: resp.name,
                             coordinates: [resp.coord.lon, resp.coord.lat],
                         },
-                        desc: resp.weather[0] && resp.weather[0].description,
-                        temp: {
-                            now: resp.main.temp,
-                            min: resp.main.temp_min,
-                            max: resp.main.temp_max,
+                        forecast: {
+                            desc: resp.weather[0] && resp.weather[0].description,
+                            temp: {
+                                now: resp.main.temp,
+                                min: resp.main.temp_min,
+                                max: resp.main.temp_max,
+                            }
                         }
-                    })
+                    });
                 })
                 .catch((err) => {
                     console.log(err);

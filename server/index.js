@@ -9,10 +9,10 @@ app.get('/forecast', (req, res) => {
     console.log(req.query);
     // TODO check query params
     weatherman.getForecast(req.query.city, req.query.units)
-        .then((forecast) => {
-            console.log(forecast);
+        .then((resp) => {
+            console.log(resp);
             res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify(forecast));
+            res.send(JSON.stringify(resp));
         })
         .catch((err) => {
             console.log(err);
