@@ -14,6 +14,7 @@ class App extends React.Component {
        return {
          city: '',
          units: 'metric',
+         forecast: {},
        }
      }
 
@@ -27,34 +28,18 @@ class App extends React.Component {
         console.log(this.state.city);
         fetch(`/forecast?city=${this.state.city}&units=${this.state.units}`)
           .then(response => response.json())
-          .then((response) => {
-              console.log(response);
+          .then((forecast) => {
+              console.log(forecast);
+              this.setState({ forecast })
           });
     }
-    // this.state = {
-    //   name: '',
-    //   greeting: ''
-    // };
-    // this.handleChange = this.handleChange.bind(this);
-    // this.handleSubmit = this.handleSubmit.bind(this);
-  // }
-
-  // handleChange(event) {
-  //   this.setState({ name: event.target.value });
-  // }
-  //
-  // handleSubmit(event) {
-  //   event.preventDefault();
-  //   fetch(`/api/greeting?name=${encodeURIComponent(this.state.name)}`)
-  //     .then(response => response.json())
-  //     .then(state => this.setState(state));
-  // }
 
   render() {
       return (
         <div className="App">
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
+
             <TextField label="City" margin="normal" variant="outlined"
                 value={this.state.city}
                 onChange={this.updateCity.bind(this)}
@@ -64,6 +49,8 @@ class App extends React.Component {
                   }
                 }}
                 />
+
+                {JSON.stringify(this.state.forecast, null, 4)}
 
           </header>
         </div>

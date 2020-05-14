@@ -12,7 +12,7 @@ app.get('/forecast', (req, res) => {
         .then((forecast) => {
             console.log(forecast);
             res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify({ happycat: `buttdump` }));
+            res.send(JSON.stringify(forecast));
         })
         .catch((err) => {
             console.log(err);

@@ -9,6 +9,7 @@ module.exports = class Weatherman {
             requestPromise(`http://api.openweathermap.org/data/2.5/weather?q=${location}&units=${units}&appid=${this.apiKey}`)
                 .then((json) => JSON.parse(json))
                 .then((resp) => {
+                    console.log(resp);
                     resolve({
                         desc: resp.weather[0] && resp.weather[0].description,
                         temp: {
