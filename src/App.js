@@ -1,9 +1,13 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import TextField from '@material-ui/core/TextField';
 // import Autocomplete from '@material-ui/lab/Autocomplete';
 import {Container, Row, Col} from 'react-bootstrap';
+
 import Map from './components/Map'
 import Forecast from './components/Forecast'
 
@@ -16,9 +20,16 @@ class App extends React.Component {
     getInitialState() {
        return {
          cityInput: '',
-         units: 'metric',
+         selectedUnitsIndex: 0,
+
          location: {},
          forecast: null,
+
+         units: [
+             {desc: 'fahrenheit', symbol: 'F', key: 'imperial'},
+             {desc: 'celsius', symbol: 'C', key: 'metric'},
+             {desc: 'kelvin', symbol: 'K', key: 'kelvin'},
+         ],
        }
      }
 
@@ -30,7 +41,7 @@ class App extends React.Component {
 
     getForecast() {
         console.log(this.state.cityInput);
-        fetch(`/forecast?city=${this.state.cityInput}&units=${this.state.units}`)
+        fetch(`/forecast?city=${this.state.cityInput}&units=${this.getSelectedUnits()}`)
           .then(response => response.json())
           .then((response) => {
               console.log(response);
@@ -41,12 +52,20 @@ class App extends React.Component {
           });
     }
 
+    getSelectedUnits() {
+        return this.state.units[this.state.selectedUnitsIndex].key;
+    }
+
   render() {
       return (
         <div className="App">
           <Container>
             <Row>
                 <Col xs={6} md={4}>
+                <ButtonGroup color="primary" aria-label="outlined primary button group">
+                    {this.state.units.map((unit, i) => (<Button key={i} onClick={() => this.setState({selectedUnitsIndex: i})}>{ unit.desc }</Button>))}
+                </ButtonGroup>
+                {this.state.selectedUnitsIndex}
                     <TextField label="City" margin="normal" variant="outlined"
                         value={this.state.city}
                         onChange={this.updateCity.bind(this)}
