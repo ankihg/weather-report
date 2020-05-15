@@ -75,7 +75,13 @@ class App extends React.Component {
             <Row>
                 <Col xs={6} md={4}>
                 <ButtonGroup color="primary" aria-label="outlined primary button group">
-                    {this.state.units.map((unit, i) => (<Button key={i} onClick={this.updateUnits.bind(this, i)}>{ unit.desc }</Button>))}
+                    {this.state.units.map((unit, i) => (
+                        <Button
+                            key={i}
+                            onClick={this.updateUnits.bind(this, i)}
+                            variant={i === this.state.selectedUnitsIndex ? "contained" : ""}>
+                                { unit.desc }
+                            </Button>))}
                 </ButtonGroup>
                     <TextField label="City" margin="normal" variant="outlined"
                         value={this.state.city}
