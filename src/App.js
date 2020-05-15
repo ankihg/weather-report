@@ -18,7 +18,7 @@ class App extends React.Component {
          cityInput: '',
          units: 'metric',
          location: {},
-         forecast: {},
+         forecast: null,
        }
      }
 
@@ -56,6 +56,15 @@ class App extends React.Component {
                           }
                         }}
                         />
+                        <Row>
+                            {
+                                this.state.forecast &&
+                                <div>
+                                    Showing forecast for:
+                                    <h1>{this.state.location.city}, {this.state.location.country}</h1>
+                                </div>
+                            }
+                        </Row>
                 </Col>
                 <Col xs={6} md={8}>
                     <Map city={this.state.location.city} coordinates={this.state.location.coordinates}></Map>

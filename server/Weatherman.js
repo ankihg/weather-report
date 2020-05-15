@@ -13,6 +13,7 @@ module.exports = class Weatherman {
                     resolve({
                         location: {
                             city: resp.name,
+                            country: resp.sys.country,
                             coordinates: [resp.coord.lon, resp.coord.lat],
                         },
                         forecast: {
