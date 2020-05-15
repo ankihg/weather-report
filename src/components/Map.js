@@ -12,7 +12,7 @@ const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-map
 export default class Map extends React.Component {
     render() {
         return (
-            <ComposableMap style={{width: "600px", height: "400px"}}>
+            <ComposableMap style={{width: '100%', height: '400px', margin: 'auto'}}>
                 <Geographies geography={geoUrl}>
                   {({ geographies }) =>
                     geographies.map(geo => <Geography key={geo.rsmKey} geography={geo} />)
