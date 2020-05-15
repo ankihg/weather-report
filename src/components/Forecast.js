@@ -14,8 +14,8 @@ export default class Forecast extends React.Component {
                         </Col>
 
                         <Col md={6}>
-                            <h3>{this.props.forecast.temp.now}º</h3>
-                            <h4>{this.props.forecast.temp.min}º - {this.props.forecast.temp.max}º</h4>
+                            <h3>{this.props.forecast.temp.now}º{this.props.unitsSymbol}</h3>
+                            <h4>{this.props.forecast.temp.min}º{this.props.unitsSymbol} - {this.props.forecast.temp.max}º{this.props.unitsSymbol}</h4>
                         </Col>
                     </Row>
                 }

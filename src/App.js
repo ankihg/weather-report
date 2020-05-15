@@ -39,21 +39,33 @@ class App extends React.Component {
         });
      }
 
+     updateUnits(unitsIndex) {
+         console.log(this.state.units[unitsIndex]);
+         const isUnitsChanged = unitsIndex !== this.state.selectedUnitsIndex;
+         this.setState({selectedUnitsIndex: unitsIndex},
+             () => isUnitsChanged && this.getForecast());
+
+     }
+
     getForecast() {
+        if (!this.state.cityInput) return;
         console.log(this.state.cityInput);
-        fetch(`/forecast?city=${this.state.cityInput}&units=${this.getSelectedUnits()}`)
-          .then(response => response.json())
-          .then((response) => {
-              console.log(response);
-              this.setState({
-                forecast: response.forecast,
-                location: response.location,
+        this.setState({forecast: null},
+            () => {
+                fetch(`/forecast?city=${this.state.cityInput}&units=${this.getSelectedUnits().key}`)
+                  .then(response => response.json())
+                  .then((response) => {
+                      console.log(response);
+                      this.setState({
+                        forecast: response.forecast,
+                        location: response.location,
+                    });
+                  });
             });
-          });
     }
 
     getSelectedUnits() {
-        return this.state.units[this.state.selectedUnitsIndex].key;
+        return this.state.units[this.state.selectedUnitsIndex];
     }
 
   render() {
@@ -63,9 +75,8 @@ class App extends React.Component {
             <Row>
                 <Col xs={6} md={4}>
                 <ButtonGroup color="primary" aria-label="outlined primary button group">
-                    {this.state.units.map((unit, i) => (<Button key={i} onClick={() => this.setState({selectedUnitsIndex: i})}>{ unit.desc }</Button>))}
+                    {this.state.units.map((unit, i) => (<Button key={i} onClick={this.updateUnits.bind(this, i)}>{ unit.desc }</Button>))}
                 </ButtonGroup>
-                {this.state.selectedUnitsIndex}
                     <TextField label="City" margin="normal" variant="outlined"
                         value={this.state.city}
                         onChange={this.updateCity.bind(this)}
@@ -90,7 +101,7 @@ class App extends React.Component {
                 </Col>
             </Row>
             <Row>
-                <Forecast forecast={this.state.forecast}></Forecast>
+                <Forecast forecast={this.state.forecast} unitsSymbol={this.getSelectedUnits().symbol}></Forecast>
             </Row>
           </Container>
 
