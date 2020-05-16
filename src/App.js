@@ -58,6 +58,7 @@ class App extends React.Component {
                     .then((response) => {
                         console.log(response);
                         this.setState({
+                            cityInput: 'help',
                             forecast: response.forecast,
                             location: response.location,
                         });
@@ -109,6 +110,10 @@ class App extends React.Component {
                                     <Card>
                                         <CardContent>
                                             <Map style={{margin: 'auto'}} city={this.state.location.city} coordinates={this.state.location.coordinates}></Map>
+                                            {
+                                                this.state.location.city &&
+                                                <h3> {this.state.location.city}, {this.state.location.country} </h3>
+                                            }
                                         </CardContent>
                                     </Card>
                                 </Col>
