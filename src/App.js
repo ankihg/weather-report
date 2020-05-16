@@ -68,17 +68,17 @@ class App extends React.Component {
                     })
                     .then(response => response.json())
                     .then((response) => {
-                        console.log('did i get here', response.ok);
-                        console.log(response);
+                        console.log('Forecast received for', this.state.cityInput, 'in', this.getSelectedUnits().key);
                         this.setState({
                             forecast: response.forecast,
                             location: response.location,
                         });
                     })
-                    .catch(err => err.json())
-                    .then((err) => {
-                        console.log('err', err);
-                        this.setState({error: err});
+                    .catch((resp) => {
+                        console.log('Error receiving forecast for', this.state.cityInput, 'in', this.getSelectedUnits().key);
+                        resp.json().then((err) => {
+                            this.setState({error: err});
+                        });
                     });
                 });
     }
