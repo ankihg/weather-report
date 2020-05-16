@@ -13,6 +13,7 @@ import {Container, Row, Col} from 'react-bootstrap';
 
 import Map from './components/Map'
 import Forecast from './components/Forecast'
+import Error from './components/Error'
 
 class App extends React.Component {
     constructor(props) {
@@ -113,7 +114,7 @@ class App extends React.Component {
                                             <CardContent>
                                                 {
                                                     this.state.error != null ?
-                                                    <h4>{this.state.error.message}</h4> :
+                                                    <Error message={this.state.error.message} /> :
                                                     <Forecast forecast={this.state.forecast} unitsSymbol={this.getSelectedUnits().symbol}></Forecast>
                                                 }
                                             </CardContent>
