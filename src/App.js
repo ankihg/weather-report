@@ -72,10 +72,11 @@ class App extends React.Component {
         return (
             <div className="App">
                 <Container>
-                    <Row>
-                        <Col md={6}>
-                            <Card>
-                                <CardContent>
+                    <Card>
+                        <CardContent>
+                            <Row>
+
+                                <Col md={6}>
                                     <TextField label="City" margin="normal" variant="outlined"
                                         value={this.state.city}
                                         onChange={this.updateCity.bind(this)}
@@ -94,6 +95,7 @@ class App extends React.Component {
                                                         { unit.desc }
                                                 </Button>))}
                                         </ButtonGroup>
+
                                     <Row>
                                         <Card style={{width: '98%', height: '200px', margin: 'auto'}}>
                                             <CardContent>
@@ -101,17 +103,18 @@ class App extends React.Component {
                                             </CardContent>
                                         </Card>
                                     </Row>
-                                </CardContent>
-                            </Card>
-                        </Col>
-                        <Col md={6}>
-                            <Card>
-                                <CardContent>
-                                    <Map style={{margin: 'auto'}} city={this.state.location.city} coordinates={this.state.location.coordinates}></Map>
-                                </CardContent>
-                            </Card>
-                        </Col>
-                    </Row>
+                                </Col>
+
+                                <Col md={6}>
+                                    <Card>
+                                        <CardContent>
+                                            <Map style={{margin: 'auto'}} city={this.state.location.city} coordinates={this.state.location.coordinates}></Map>
+                                        </CardContent>
+                                    </Card>
+                                </Col>
+                            </Row>
+                        </CardContent>
+                    </Card>
                 </Container>
             </div>
       );
