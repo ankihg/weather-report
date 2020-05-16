@@ -1,12 +1,11 @@
-const requestPromise = require('request-promise');
-
 module.exports = class Weatherman {
-    constructor(apiKey) {
+    constructor(apiKey, makeHttpRequest) {
         this.apiKey = apiKey;
+        this.makeHttpRequest = makeHttpRequest;
     }
     getForecast(location, units='imperial') {
         return new Promise((resolve, reject) => {
-            requestPromise(`http://api.openweathermap.org/data/2.5/weather?q=${location}&units=${units}&appid=${this.apiKey}`)
+            this.makeHttpRequest(`http://api.openweathermap.org/data/2.5/weather?q=${location}&units=${units}&appid=${this.apiKey}`)
                 .then((json) => JSON.parse(json))
                 .then((resp) => {
                     console.log(resp);

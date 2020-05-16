@@ -1,8 +1,9 @@
 const express = require('express');
 const Weatherman = require('./Weatherman');
+const requestPromise = require('request-promise');
 
 const app = express();
-const weatherman = new Weatherman(process.env.owmApiKey);
+const weatherman = new Weatherman(process.env.owmApiKey, requestPromise);
 
 app.get('/forecast', (req, res) => {
     console.log('butt');
