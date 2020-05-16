@@ -14,13 +14,18 @@ export default class Forecast extends React.Component {
                         </Col>
 
                         <Col md={6}>
-                            <h3>{this.props.forecast.temp.now}º{this.props.unitsSymbol}</h3>
-                            <h4>{this.props.forecast.temp.min}º{this.props.unitsSymbol} - {this.props.forecast.temp.max}º{this.props.unitsSymbol}</h4>
+                            <h3><Temp temp={this.props.forecast.temp.now} unitsSymbol={this.props.unitsSymbol}/></h3>
+                            <h4><Temp temp={this.props.forecast.temp.min} unitsSymbol={this.props.unitsSymbol}/> - <Temp temp={this.props.forecast.temp.max} unitsSymbol={this.props.unitsSymbol}/></h4>
                         </Col>
                     </Row>
                 }
                 </Container>
         );
     }
+}
 
+class Temp extends React.Component {
+    render() {
+        return (<span>{this.props.temp}º{this.props.unitsSymbol}</span>);
+    }
 }

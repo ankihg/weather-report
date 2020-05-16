@@ -1,5 +1,6 @@
 ## TODO
 - Refresh every 10min or so
+- Error handling
 
 
 
