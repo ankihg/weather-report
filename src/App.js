@@ -24,8 +24,10 @@ class App extends React.Component {
         return {
             cityInput: '',
             selectedUnitsIndex: 0,
+
             location: {},
             forecast: null,
+            error: null,
 
             units: [
                 {desc: 'fahrenheit', symbol: 'F', key: 'imperial'},
@@ -54,13 +56,23 @@ class App extends React.Component {
             () => {
                 console.log('Requesting forecast for', this.state.cityInput, 'in', this.getSelectedUnits().key);
                 fetch(`/forecast?city=${this.state.cityInput}&units=${this.getSelectedUnits().key}`)
+                    .then(resp => {
+                        if (!resp.ok) throw resp;
+                        return resp;
+                    })
                     .then(response => response.json())
                     .then((response) => {
+                        console.log('did i get here', response.ok);
                         console.log(response);
                         this.setState({
                             forecast: response.forecast,
                             location: response.location,
                         });
+                    })
+                    .catch(err => err.json())
+                    .then((err) => {
+                        console.log('err', err);
+                        this.setState({error: err});
                     });
                 });
     }
@@ -99,7 +111,11 @@ class App extends React.Component {
                                     <Row>
                                         <Card style={{width: '98%', height: '200px', margin: 'auto'}}>
                                             <CardContent>
-                                                <Forecast forecast={this.state.forecast} unitsSymbol={this.getSelectedUnits().symbol}></Forecast>
+                                                {
+                                                    this.state.error != null ?
+                                                    <h4>{this.state.error.message}</h4> :
+                                                    <Forecast forecast={this.state.forecast} unitsSymbol={this.getSelectedUnits().symbol}></Forecast>
+                                                }
                                             </CardContent>
                                         </Card>
                                     </Row>

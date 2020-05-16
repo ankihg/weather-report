@@ -26,9 +26,11 @@ module.exports = class Weatherman {
                         }
                     });
                 })
-                .catch((err) => {
-                    console.log(err);
-                    reject('nay')
+                .catch((resp) => {
+                    if (!(resp && resp.error))
+                        return reject({code: 500, message: 'Error retrieving weather data'});
+                    const err = JSON.parse(resp.error);
+                    return reject({code: err.cod, message: err.message})
                 });
         });
 
