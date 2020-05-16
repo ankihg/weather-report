@@ -29,6 +29,7 @@ class App extends React.Component {
             location: {},
             forecast: null,
             error: null,
+            awaitingResponse: false,
 
             units: [
                 {desc: 'fahrenheit', symbol: 'F', key: 'imperial'},
@@ -58,11 +59,13 @@ class App extends React.Component {
                 location: {},
                 forecast: null,
                 error: null,
+                awaitingResponse: true,
             },
             () => {
                 console.log('Requesting forecast for', this.state.cityInput, 'in', this.getSelectedUnits().key);
                 fetch(`/forecast?city=${this.state.cityInput}&units=${this.getSelectedUnits().key}`)
                     .then(resp => {
+                        this.setState({awaitingResponse: false});
                         if (!resp.ok) throw resp;
                         return resp;
                     })
@@ -118,6 +121,9 @@ class App extends React.Component {
                                         <Card style={{width: '98%', height: '200px', margin: 'auto'}}>
                                             <CardContent>
                                                 {
+                                                    this.state.awaitingResponse ?
+                                                    <h6>Requesting data...</h6>
+                                                    :
                                                     this.state.error != null ?
                                                     <Error message={this.state.error.message} /> :
                                                     <Forecast forecast={this.state.forecast} unitsSymbol={this.getSelectedUnits().symbol}></Forecast>
