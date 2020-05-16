@@ -50,15 +50,14 @@ class App extends React.Component {
 
     getForecast() {
         if (!this.state.cityInput) return;
-        console.log(this.state.cityInput);
         this.setState({forecast: null},
             () => {
+                console.log('Requesting forecast for', this.state.cityInput, 'in', this.getSelectedUnits().key);
                 fetch(`/forecast?city=${this.state.cityInput}&units=${this.getSelectedUnits().key}`)
                     .then(response => response.json())
                     .then((response) => {
                         console.log(response);
                         this.setState({
-                            cityInput: 'help',
                             forecast: response.forecast,
                             location: response.location,
                         });
