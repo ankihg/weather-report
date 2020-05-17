@@ -67,3 +67,19 @@ test('fail gracefully when city not found', (done) => {
             return done();
         });
 });
+
+test('fail gracefully on unknown error', (done) => {
+    const makeHttpRequest = function() {
+        return new Promise((resolve, reject) => {
+            reject(null);
+        });
+    }
+
+    const weatherman = new Weatherman(apiKey, makeHttpRequest);
+    weatherman.getForecast('seattle', 'metric')
+        .catch((resp) => {
+            expect(resp.code).toBe(500);
+            expect(resp.message).toBe('Error retrieving weather data');
+            return done();
+        });
+});
