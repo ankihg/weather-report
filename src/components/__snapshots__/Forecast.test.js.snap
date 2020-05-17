@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot of Forecast component 1`] = `
+<div
+  className="container"
+>
+  {
+    "desc": "Cloudy forever",
+    "temp": {
+        "now": 55,
+        "min": 54,
+        "max": 57
+    }
+}
+  <div
+    className="row"
+  >
+    <div
+      className="col-md-6"
+    >
+      <h2>
+        Cloudy forever
+      </h2>
+    </div>
+    <div
+      className="col-md-6"
+    >
+      <h3>
+        <span>
+          55
+          º
+        </span>
+      </h3>
+      <h4>
+        <span>
+          54
+          º
+        </span>
+         - 
+        <span>
+          57
+          º
+        </span>
+      </h4>
+    </div>
+  </div>
+</div>
+`;

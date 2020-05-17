@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot of Map component 1`] = `
+<svg
+  className="rsm-svg "
+  style={
+    Object {
+      "height": "400px",
+      "margin": "auto",
+      "width": "100%",
+    }
+  }
+  viewBox="0 0 800 600"
+>
+  <g
+    className="rsm-geographies "
+  />
+  <g
+    className="rsm-marker "
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onMouseDown={[Function]}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+    onMouseUp={[Function]}
+    transform="translate(126.070043393491, 139.98140624321968)"
+  >
+    <circle
+      fill="#F00"
+      r={10}
+      stroke="#fff"
+      strokeWidth={2}
+    />
+  </g>
+</svg>
+`;

@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot of Error component 1`] = `
+<span>
+  <h2>
+    This is a test
+  </h2>
+  <h6>
+    Please try again
+  </h6>
+</span>
+`;
+
+exports[`Snapshot of Forecast component 1`] = `
+<span>
+  <h2>
+    This is a test
+  </h2>
+  <h6>
+    Please try again
+  </h6>
+</span>
+`;

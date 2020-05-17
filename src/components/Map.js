@@ -23,12 +23,6 @@ export default class Map extends React.Component {
                     this.props.city && this.props.coordinates &&
                     <Marker key={this.props.city} coordinates={this.props.coordinates}>
                       <circle r={10} fill="#F00" stroke="#fff" strokeWidth={2} />
-                      <text
-                        textAnchor="middle"
-                        y={15}
-                        style={{ fontFamily: "system-ui", fill: "#5D5A6D" }}>
-                        {this.props.city}
-                      </text>
                     </Marker>
                 }
 
