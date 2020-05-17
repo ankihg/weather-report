@@ -1,4 +1,5 @@
 const Weatherman = require('./Weatherman');
+const apiKey = 'mock-api-key';
 
 test('successfully make request to weather service', (done) => {
     const openweathermapResponse = {
@@ -32,7 +33,7 @@ test('successfully make request to weather service', (done) => {
       });
   }
 
-  const weatherman = new Weatherman('mock-api-key', makeHttpRequest);
+  const weatherman = new Weatherman(apiKey, makeHttpRequest);
   weatherman.getForecast('seattle', 'metric')
     .then((resp) => {
         expect(resp.forecast.desc).toBe('light rain');
@@ -45,5 +46,24 @@ test('successfully make request to weather service', (done) => {
         expect(resp.location.country).toBe('US');
 
         return done();
-    })
+    });
+});
+
+test('fail gracefully when city not found', (done) => {
+    const openweathermapError = {cod: 404, message: 'city not found' };
+
+    const makeHttpRequest = function() {
+        return new Promise((resolve, reject) => {
+            const resp = { error: JSON.stringify(openweathermapError) }
+            reject(resp);
+        });
+    }
+
+    const weatherman = new Weatherman(apiKey, makeHttpRequest);
+    weatherman.getForecast('seattle', 'metric')
+        .catch((resp) => {
+            expect(resp.code).toBe(404);
+            expect(resp.message).toBe('city not found');
+            return done();
+        });
 });
