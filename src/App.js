@@ -44,9 +44,10 @@ class App extends React.Component {
        }
      }
 
-     updateCity(evt) {
+     updateCity(value) {
+         console.log('value', value);
          this.setState({
-             cityInput: evt.target.value,
+             cityInput: value,
          }, () => {
              if (this.state.cityInput.length === 3)
                 this.loadCitiesMatchingPrefix(this.state.cityInput);
@@ -121,12 +122,15 @@ class App extends React.Component {
                                     <Autocomplete
                                         id="free-solo-demo"
                                         freeSolo
-                                        limitTags={2}
+                                        onChange={(evt, val) => {
+                                            this.updateCity(val);
+                                            this.getForecast();
+                                        }}
                                         options={this.state.cities.slice(0, 10000).map((c) => `${c.name}${c.state && `, ${c.state}`}, ${c.country}`)}
                                         renderInput={(params) => (
                                             <TextField {...params} label="City" margin="normal" variant="outlined"
-                                                value={this.state.cityInput}
-                                                onChange={this.updateCity.bind(this)}
+                                                value={this.cityInput}
+                                                onChange={(evt) => this.updateCity.call(this, evt.target.value)}
                                                 onKeyPress={event => {
                                                   if (event.key === 'Enter') {
                                                     this.getForecast.call(this)

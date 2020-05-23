@@ -1,6 +1,8 @@
 const Weatherman = require('./Weatherman');
 const apiKey = 'mock-api-key';
 
+// TODO handling of accented characters
+
 test('successfully make request to weather service', (done) => {
     const openweathermapResponse = {
         coord: { lon: -122.33, lat: 47.61 },

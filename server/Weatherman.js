@@ -1,3 +1,5 @@
+const querystring = require('querystring');
+
 module.exports = class Weatherman {
     constructor(apiKey, makeHttpRequest) {
         this.apiKey = apiKey;
@@ -5,7 +7,10 @@ module.exports = class Weatherman {
     }
     getForecast(location, units='imperial') {
         return new Promise((resolve, reject) => {
-            this.makeHttpRequest(`http://api.openweathermap.org/data/2.5/weather?q=${location}&units=${units}&appid=${this.apiKey}`)
+            const queryParams = { q: location, units: units, };
+            const reqUrl = `http://api.openweathermap.org/data/2.5/weather?${querystring.stringify(queryParams)}`;
+            console.log(`Making request to OWM: ${reqUrl}`);
+            this.makeHttpRequest(`${reqUrl}&appid=${this.apiKey}`)
                 .then((json) => JSON.parse(json))
                 .then((resp) => {
                     console.log(resp);
