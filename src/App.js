@@ -7,8 +7,8 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
-// import Autocomplete from '@material-ui/lab/Autocomplete';
 import {Container, Row, Col} from 'react-bootstrap';
 
 import Map from './components/Map'
@@ -21,6 +21,10 @@ class App extends React.Component {
         this.state = this.getInitialState();
     }
 
+    componentDidMount() {
+        this.loadCitiesMatchingPrefix('sea');
+    }
+
     getInitialState() {
         return {
             cityInput: '',
@@ -31,6 +35,7 @@ class App extends React.Component {
             error: null,
             awaitingResponse: false,
 
+            cities: [], // Loaded from backend at page load
             units: [
                 {desc: 'fahrenheit', symbol: 'F', key: 'imperial'},
                 {desc: 'celsius', symbol: 'C', key: 'metric'},
@@ -42,6 +47,9 @@ class App extends React.Component {
      updateCity(evt) {
          this.setState({
              cityInput: evt.target.value,
+         }, () => {
+             if (this.state.cityInput.length === 3)
+                this.loadCitiesMatchingPrefix(this.state.cityInput);
          });
      }
 
@@ -79,11 +87,23 @@ class App extends React.Component {
                     })
                     .catch((resp) => {
                         console.log('Error receiving forecast for', this.state.cityInput, 'in', this.getSelectedUnits().key);
-                        resp.json().then((err) => {
-                            this.setState({error: err});
-                        });
+                        if (resp.json)
+                            resp.json().then((err) => {
+                                this.setState({error: err});
+                            });
+                        else this.setState({error: {message: 'unknown error'}});
                     });
                 });
+    }
+
+    loadCitiesMatchingPrefix(prefix) {
+        fetch(`/cities?prefix=${prefix}`)
+            .then(response => response.json())
+            .then((cities) => {
+                console.log('got cities', cities.length, cities[0]);
+                this.setState({cities: cities});
+            })
+            .catch();
     }
 
     getSelectedUnits() {
@@ -98,14 +118,22 @@ class App extends React.Component {
                             <Row>
 
                                 <Col md={6}>
-                                    <TextField label="City" margin="normal" variant="outlined"
-                                        value={this.state.city}
-                                        onChange={this.updateCity.bind(this)}
-                                        onKeyPress={event => {
-                                          if (event.key === 'Enter') {
-                                            this.getForecast.call(this)
-                                          }
-                                        }}/>
+                                    <Autocomplete
+                                        id="free-solo-demo"
+                                        freeSolo
+                                        limitTags={2}
+                                        options={this.state.cities.slice(0, 10000).map((c) => `${c.name}${c.state && `, ${c.state}`}, ${c.country}`)}
+                                        renderInput={(params) => (
+                                            <TextField {...params} label="City" margin="normal" variant="outlined"
+                                                value={this.state.cityInput}
+                                                onChange={this.updateCity.bind(this)}
+                                                onKeyPress={event => {
+                                                  if (event.key === 'Enter') {
+                                                    this.getForecast.call(this)
+                                                  }
+                                                }}/>
+                                            )}
+                                          />
 
                                         <ButtonGroup style={{marginTop: '25px', marginLeft: '5px'}} color="primary" aria-label="outlined primary button group">
                                             {this.state.units.map((unit, i) => (

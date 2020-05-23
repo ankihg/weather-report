@@ -1,9 +1,12 @@
 const express = require('express');
-const Weatherman = require('./Weatherman');
 const requestPromise = require('request-promise');
+const Weatherman = require('./Weatherman');
+const LocationResolver = require('./LocationResolver');
 
-const app = express();
 const weatherman = new Weatherman(process.env.owmApiKey, requestPromise);
+const locationResolver = new LocationResolver(require('./resources/city.list.min'));
+console.log(locationResolver.resolve('sea').length);
+const app = express();
 
 app.get('/forecast', (req, res) => {
     console.log('butt');
@@ -13,13 +16,20 @@ app.get('/forecast', (req, res) => {
     weatherman.getForecast(req.query.city, req.query.units)
         .then((resp) => {
             console.log(resp);
-            res.send(JSON.stringify(resp));
+            res.send(JSON.stringify(resp)); // TODO use res.json()
         })
         .catch((err) => {
             console.log(err);
-            res.status(err.code).send({message: err.message});
+            res.status(err.code).send({message: err.message}); // TODO use res.json()
         });
-})
+});
+
+app.get('/cities', (req, res) => {
+    console.log('Get cities', req.query);
+    res.setHeader('Content-Type', 'application/json');
+    // TODO check query params
+    res.json(locationResolver.resolve(req.query.prefix));
+});
 
 app.listen(3001, () => {
     console.log('Server on port 3001');
