@@ -42,9 +42,9 @@ class App extends React.Component {
 
             cityMatches: [], // Loaded from backend at page load and input change
             units: [
-                {desc: 'fahrenheit', symbol: 'F', key: 'imperial'},
-                {desc: 'celsius', symbol: 'C', key: 'metric'},
-                {desc: 'kelvin', symbol: 'K', key: 'kelvin'},
+                {desc: 'fahrenheit', tempSymbol: 'F', speedSymbol: 'miles/hour', key: 'imperial'},
+                {desc: 'celsius', tempSymbol: 'C', speedSymbol: 'meters/sec', key: 'metric'},
+                {desc: 'kelvin', tempSymbol: 'K', speedSymbol: 'meters/sec', key: 'kelvin'},
             ],
        }
      }
@@ -191,7 +191,7 @@ class App extends React.Component {
                                                     <Error message={this.state.error.message} /> :
 
                                                     this.state.forecast ?
-                                                    <Forecast forecast={this.state.forecast} unitsSymbol={this.getSelectedUnits().symbol}></Forecast>
+                                                    <Forecast forecast={this.state.forecast} tempSymbol={this.getSelectedUnits().tempSymbol} speedSymbol={this.getSelectedUnits().speedSymbol}/>
                                                     :
                                                     <h3>Enter a city to see its forecast</h3>
                                                 }
