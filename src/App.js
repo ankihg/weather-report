@@ -34,7 +34,7 @@ class App extends React.Component {
             forecast: null,
             error: null,
             awaitingResponse: false,
-            recentSearches: [
+            suggestedCities: [
                 'Seattle, WA, US',
                 'Dubai, AE',
                 'Perth, AU',
@@ -105,7 +105,7 @@ class App extends React.Component {
                             forecast: response.forecast,
                             location: response.location,
                         });
-                        this.addToRecentSearches(this.state.cityInput);
+                        this.addToSuggestedCities(this.state.cityInput);
                     })
                     .catch((resp) => {
                         console.log('Error receiving forecast for', this.state.cityInput, 'in', this.getSelectedUnits().key);
@@ -118,16 +118,16 @@ class App extends React.Component {
                 });
     }
 
-    addToRecentSearches(city) {
-        console.log('addToRecentSearches', city);
-        for (let recentCity of this.state.recentSearches)
+    addToSuggestedCities(city) {
+        console.log('addToSuggestedCities', city);
+        for (let recentCity of this.state.suggestedCities)
             if (city === recentCity) return;
 
-        this.state.recentSearches.unshift(city);
-        if (this.state.recentSearches > 3)
-            this.state.recentSearches.pop();
+        this.state.suggestedCities.unshift(city);
+        if (this.state.suggestedCities > 3)
+            this.state.suggestedCities.pop();
 
-        this.setState({recentSearches: this.state.recentSearches});
+        this.setState({suggestedCities: this.state.suggestedCities});
     }
 
     loadCitiesMatchingPrefix(prefix) {
@@ -201,7 +201,7 @@ class App extends React.Component {
                                     <Row>
                                         <Card style={{width: '98%', height: '180px', margin: 'auto'}}>
                                             <CardContent>
-                                                <Suggestions suggestedCities={this.state.recentSearches} updateCityAndGetForecast={this.updateCityAndGetForecast.bind(this)} />
+                                                <Suggestions suggestedCities={this.state.suggestedCities} updateCityAndGetForecast={this.updateCityAndGetForecast.bind(this)} />
                                             </CardContent>
                                         </Card>
                                     </Row>
