@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 import Button from '@material-ui/core/Button';
@@ -122,7 +121,7 @@ class App extends React.Component {
     addToRecentSearches(city) {
         console.log('addToRecentSearches', city);
         for (let recentCity of this.state.recentSearches)
-            if (city == recentCity) return;
+            if (city === recentCity) return;
 
         this.state.recentSearches.unshift(city);
         if (this.state.recentSearches > 3)
