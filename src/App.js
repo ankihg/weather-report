@@ -8,16 +8,13 @@ import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-
 
 import {Container, Row, Col} from 'react-bootstrap';
 
 import Map from './components/Map'
 import Forecast from './components/Forecast'
 import Error from './components/Error'
+import Suggestions from './components/Suggestions'
 
 class App extends React.Component {
     constructor(props) {
@@ -38,7 +35,11 @@ class App extends React.Component {
             forecast: null,
             error: null,
             awaitingResponse: false,
-            recentSearches: [],
+            recentSearches: [
+                'Seattle, WA, US',
+                'Dubai, AE',
+                'Perth, AU',
+            ],
 
             cityMatches: [], // Loaded from backend at page load and input change
             units: [
@@ -57,16 +58,20 @@ class App extends React.Component {
          });
      }
 
-     updateCity(value, next) {
-         console.log('Update city:', value);
+     updateCity(val, next) {
+         console.log('Update city:', val);
          this.setState({
-             cityInput: value || '',
+             cityInput: val || '',
          }, () => {
              if (!this.state.cityInput) this.clearResultState();
              else if (this.state.cityInput.length === 3)
                 this.loadCitiesMatchingPrefix(this.state.cityInput);
             if (next) return next();
          });
+     }
+
+     updateCityAndGetForecast(val) {
+         this.updateCity(val, this.getForecast.bind(this))
      }
 
      updateUnits(unitsIndex) {
@@ -151,7 +156,7 @@ class App extends React.Component {
                                     <Autocomplete
                                         id="free-solo-demo"
                                         freeSolo
-                                        onChange={(evt, val) => { this.updateCity(val, this.getForecast.bind(this)) }}
+                                        onChange={(evt, val) => { this.updateCityAndGetForecast.call(this, val) }}
                                         options={this.state.cityMatches.slice(0, 10000).map((c) => `${c.name}${c.state && `, ${c.state}`}, ${c.country}`)}
                                         renderInput={(params) => (
                                             <TextField {...params} label="City" margin="normal" variant="outlined"
@@ -177,7 +182,7 @@ class App extends React.Component {
                                         </ButtonGroup>
 
                                     <Row>
-                                        <Card style={{width: '98%', height: '200px', margin: 'auto'}}>
+                                        <Card style={{width: '98%', height: '120px', margin: 'auto'}}>
                                             <CardContent>
                                                 {
                                                     this.state.awaitingResponse ?
@@ -189,18 +194,15 @@ class App extends React.Component {
                                                     this.state.forecast ?
                                                     <Forecast forecast={this.state.forecast} unitsSymbol={this.getSelectedUnits().symbol}></Forecast>
                                                     :
-                                                    <div>
-                                                        <h2>Enter a city to see its forecast</h2>
-                                                        <h4>Recent searches: </h4>
-                                                        <List component="nav" aria-label="secondary mailbox folders">
-                                                            {this.state.recentSearches.map((recentCity, i) => (
-                                                                <ListItem button key={i} onClick={this.updateCity.bind(this, recentCity, this.getForecast.bind(this))}>
-                                                                    <ListItemText primary={recentCity} />
-                                                                </ListItem>
-                                                            ))}
-                                                        </List>
-                                                    </div>
+                                                    <h2>Enter a city to see its forecast</h2>
                                                 }
+                                            </CardContent>
+                                        </Card>
+                                    </Row>
+                                    <Row>
+                                        <Card style={{width: '98%', height: '180px', margin: 'auto'}}>
+                                            <CardContent>
+                                                <Suggestions suggestedCities={this.state.recentSearches} updateCityAndGetForecast={this.updateCityAndGetForecast.bind(this)} />
                                             </CardContent>
                                         </Card>
                                     </Row>
