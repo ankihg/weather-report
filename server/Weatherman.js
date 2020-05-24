@@ -26,7 +26,9 @@ module.exports = class Weatherman {
                                 now: resp.main.temp,
                                 min: resp.main.temp_min,
                                 max: resp.main.temp_max,
-                            }
+                            },
+                            humidity: resp.main.humidity,
+                            windSpeed: resp.wind.speed,
                         }
                     });
                 })

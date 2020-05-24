@@ -43,6 +43,9 @@ test('successfully make request to weather service', (done) => {
         expect(resp.forecast.temp.min).toBe(57.2);
         expect(resp.forecast.temp.max).toBe(61);
 
+        expect(resp.forecast.humidity).toBe(82);
+        expect(resp.forecast.windSpeed).toBe(4.7);
+
         expect(resp.location.coordinates).toStrictEqual([-122.33, 47.61]);
         expect(resp.location.city).toBe('Seattle');
         expect(resp.location.country).toBe('US');
