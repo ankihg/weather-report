@@ -5,9 +5,8 @@ export default class Forecast extends React.Component {
     render() {
         return (
             <Container>
-                {JSON.stringify(this.props.forecast, null, 4)}
                 {
-                    this.props.forecast &&
+                    this.props.forecast ?
                     <Row>
                         <Col md={6}>
                             <h2>{this.props.forecast && this.props.forecast.desc}</h2>
@@ -18,6 +17,8 @@ export default class Forecast extends React.Component {
                             <h4><Temp temp={this.props.forecast.temp.min} unitsSymbol={this.props.unitsSymbol}/> - <Temp temp={this.props.forecast.temp.max} unitsSymbol={this.props.unitsSymbol}/></h4>
                         </Col>
                     </Row>
+                    :
+                    <h2>Enter a city to see its forecast</h2>
                 }
                 </Container>
         );

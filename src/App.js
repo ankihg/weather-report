@@ -44,12 +44,23 @@ class App extends React.Component {
        }
      }
 
-     updateCity(value) {
+     clearResultState() {
+         this.setState({
+             location: {},
+             forecast: null,
+             error: null,
+         });
+     }
+
+     updateCity(value, next) {
+         console.log('Update city:', value);
          this.setState({
              cityInput: value || '',
          }, () => {
-             if (this.state.cityInput.length === 3)
+             if (!this.state.cityInput) this.clearResultState();
+             else if (this.state.cityInput.length === 3)
                 this.loadCitiesMatchingPrefix(this.state.cityInput);
+            if (next) return next();
          });
      }
 
@@ -61,6 +72,7 @@ class App extends React.Component {
      }
 
     getForecast() {
+        console.log('this.state.cityInput', this.state.cityInput);
         if (!this.state.cityInput) return;
         this.setState(
             {
@@ -122,13 +134,13 @@ class App extends React.Component {
                                         id="free-solo-demo"
                                         freeSolo
                                         onChange={(evt, val) => {
-                                            this.updateCity(val);
-                                            this.getForecast();
+                                            this.updateCity(val, this.getForecast.bind(this));
                                         }}
                                         options={this.state.cityMatches.slice(0, 10000).map((c) => `${c.name}${c.state && `, ${c.state}`}, ${c.country}`)}
                                         renderInput={(params) => (
                                             <TextField {...params} label="City" margin="normal" variant="outlined"
                                                 value={this.cityInput}
+                                                placeholder={'St. Louis, MO, US'}
                                                 onChange={(evt) => this.updateCity.call(this, evt.target.value)}
                                                 onKeyPress={event => {
                                                   if (event.key === 'Enter') {
