@@ -34,7 +34,7 @@ class App extends React.Component {
             forecast: null,
             error: null,
             awaitingResponse: false,
-            suggestedCities: [
+            suggestedCities: [ // Modified at forecast fetch to add recently searched cities
                 'Seattle, WA, US',
                 'Dubai, AE',
                 'Perth, AU',
@@ -193,7 +193,7 @@ class App extends React.Component {
                                                     this.state.forecast ?
                                                     <Forecast forecast={this.state.forecast} unitsSymbol={this.getSelectedUnits().symbol}></Forecast>
                                                     :
-                                                    <h2>Enter a city to see its forecast</h2>
+                                                    <h3>Enter a city to see its forecast</h3>
                                                 }
                                             </CardContent>
                                         </Card>
