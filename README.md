@@ -1,8 +1,26 @@
 ## TODO
 - Refresh every 10min or so
-- Error handling
+- Mobile responsive
+- Write units and suggestedCities to localstorage
+
+# About
+A simple full-stack app powered by a Node/Express backend and React frontend that displays weather forecasts retrieved from [Open Weather Map](https://openweathermap.org/)
 
 
+# Run locally
+Please create a `.env` file at the root of the project defining an API key named `owmApiKey` from Open Weather Map
+```
+owmApiKey=abc123
+```
+
+Then to serve the project locally run `npm run dev` and visit `localhost:3000`
+
+This will use ports 3000 and 3001
+
+# Production considerations
+- Text internationalization
+- Healthchecks for OpenWeatherMap
+-
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
