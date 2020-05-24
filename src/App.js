@@ -22,7 +22,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        this.loadCitiesMatchingPrefix('sea');
+        this.loadCitiesMatchingPrefix('aba');
     }
 
     getInitialState() {
@@ -35,7 +35,7 @@ class App extends React.Component {
             error: null,
             awaitingResponse: false,
 
-            cities: [], // Loaded from backend at page load
+            cityMatches: [], // Loaded from backend at page load and input change
             units: [
                 {desc: 'fahrenheit', symbol: 'F', key: 'imperial'},
                 {desc: 'celsius', symbol: 'C', key: 'metric'},
@@ -45,9 +45,8 @@ class App extends React.Component {
      }
 
      updateCity(value) {
-         console.log('value', value);
          this.setState({
-             cityInput: value,
+             cityInput: value || '',
          }, () => {
              if (this.state.cityInput.length === 3)
                 this.loadCitiesMatchingPrefix(this.state.cityInput);
@@ -102,7 +101,7 @@ class App extends React.Component {
             .then(response => response.json())
             .then((cities) => {
                 console.log('got cities', cities.length, cities[0]);
-                this.setState({cities: cities});
+                this.setState({cityMatches: cities});
             })
             .catch();
     }
@@ -126,7 +125,7 @@ class App extends React.Component {
                                             this.updateCity(val);
                                             this.getForecast();
                                         }}
-                                        options={this.state.cities.slice(0, 10000).map((c) => `${c.name}${c.state && `, ${c.state}`}, ${c.country}`)}
+                                        options={this.state.cityMatches.slice(0, 10000).map((c) => `${c.name}${c.state && `, ${c.state}`}, ${c.country}`)}
                                         renderInput={(params) => (
                                             <TextField {...params} label="City" margin="normal" variant="outlined"
                                                 value={this.cityInput}

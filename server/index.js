@@ -5,7 +5,7 @@ const LocationResolver = require('./LocationResolver');
 
 const weatherman = new Weatherman(process.env.owmApiKey, requestPromise);
 const locationResolver = new LocationResolver(require('./resources/city.list.min'));
-console.log(locationResolver.resolve('sea').length);
+console.log('ha ', locationResolver.resolve('ha ').length);
 const app = express();
 
 app.get('/forecast', (req, res) => {
@@ -28,7 +28,7 @@ app.get('/cities', (req, res) => {
     console.log('Get cities', req.query);
     res.setHeader('Content-Type', 'application/json');
     // TODO check query params
-    res.json(locationResolver.resolve(req.query.prefix));
+    res.json(locationResolver.resolve(req.query.prefix || ''));
 });
 
 app.listen(3001, () => {

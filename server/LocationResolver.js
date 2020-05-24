@@ -4,13 +4,19 @@ module.exports = class LocationResolver {
     }
     hashCityListByName(cityList, prefixLength=3) {
         return cityList.reduce((acc, city) => {
-            const key = city.name.substring(0, prefixLength).toLowerCase();
+            if (!city.name) return acc;
+            const fullName = `${city.name}${city.state && `, ${city.state}`}, ${city.country}`;
+            const key = this.prepKey(fullName.substring(0, prefixLength));
             acc[key] = acc[key] || [];
             acc[key].push(city);
             return acc;
         });
     }
     resolve(prefix) {
-        return this.cityHash[prefix.toLowerCase()] || [];
+        if (!prefix) return [];
+        return this.cityHash[this.prepKey(prefix)] || [];
+    }
+    prepKey(str) {
+        return str.toLowerCase();
     }
 }
