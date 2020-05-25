@@ -3,11 +3,11 @@
 - Mobile responsive
 - Write units and suggestedCities to localstorage
 
-# About
+## About
 A simple full-stack app powered by a Node/Express backend and React frontend that displays weather forecasts retrieved from [Open Weather Map](https://openweathermap.org/)
 
 
-# Run locally
+## Run locally
 First create a `.env` file at the root of the project defining an API key named `owmApiKey` from Open Weather Map
 ```
 owmApiKey=abc123
@@ -16,6 +16,11 @@ owmApiKey=abc123
 Then to serve the project locally run `npm run dev` and visit `localhost:3000`
 
 This will use ports 3000 and 3001
+
+## Test
+Make sure you have [Jest](https://jestjs.io/) installed globally by running `npm install -g jest`
+
+Then run `npm test` to run both backend and frontend tests
 
 # Production considerations
 - Text internationalization
