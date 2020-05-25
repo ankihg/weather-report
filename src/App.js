@@ -37,7 +37,7 @@ class App extends React.Component {
             suggestedCities: [ // Modified at forecast fetch to add recently searched cities
                 'Seattle, WA, US',
                 'Tokyo, JP',
-                'Perth, AU',
+                'Cape Town, ZA',
             ],
 
             cityMatches: [], // Loaded from backend at page load and input change
@@ -144,83 +144,77 @@ class App extends React.Component {
     }
     render() {
         return (
-            <div className="App">
-                <Container>
-                    <Card>
-                        <CardContent>
-                            <Row>
-                                <Col md={6}>
-                                    <Autocomplete
-                                        freeSolo
-                                        onChange={(evt, val) => { this.updateCityAndGetForecast.call(this, val) }}
-                                        options={this.state.cityMatches.slice(0, 10000).map((c) => `${c.name}${c.state && `, ${c.state}`}, ${c.country}`)}
-                                        renderInput={(params) => (
-                                            <TextField {...params} label="City" margin="normal" variant="outlined"
-                                                value={this.state.cityInput}
-                                                placeholder={'St. Louis, MO, US'}
-                                                onChange={(evt) => this.updateCity.call(this, evt.target.value)}
-                                                onKeyPress={event => {
-                                                  if (event.key === 'Enter') {
-                                                    this.getForecast.call(this)
-                                                  }
-                                                }}/>
-                                            )}
-                                          />
+            <Container className="App">
+                <Card>
+                    <CardContent>
+                        <Row>
+                            <Col md={6}>
+                                <Autocomplete
+                                    freeSolo
+                                    onChange={(evt, val) => { this.updateCityAndGetForecast.call(this, val) }}
+                                    options={this.state.cityMatches.slice(0, 10000).map((c) => `${c.name}${c.state && `, ${c.state}`}, ${c.country}`)}
+                                    renderInput={(params) => (
+                                        <TextField {...params} label="City" margin="normal" variant="outlined"
+                                            value={this.state.cityInput}
+                                            placeholder={'St. Louis, MO, US'}
+                                            onChange={(evt) => this.updateCity.call(this, evt.target.value)}
+                                            onKeyPress={evt => { evt.key === 'Enter' && this.getForecast.call(this) }}/>
+                                        )}
+                                      />
 
-                                          <Row>
-                                              <ButtonGroup style={{marginTop: '25px', margin: 'auto'}} color="primary" aria-label="outlined primary button group">
-                                                  {this.state.units.map((unit, i) => (
-                                                      <Button
+                                      <Row>
+                                          <ButtonGroup style={{marginTop: '25px', margin: 'auto'}} color="primary" aria-label="outlined primary button group">
+                                              {this.state.units.map((unit, i) => (
+                                                  <Button
                                                           key={i}
                                                           onClick={this.updateUnits.bind(this, i)}
                                                           variant={i === this.state.selectedUnitsIndex ? "contained" : ""}>
-                                                              { unit.desc }
-                                                      </Button>))}
-                                              </ButtonGroup>
-                                          </Row>
-                                    <Row>
-                                        <Card style={{width: '98%', height: '140px', margin: 'auto', marginTop: '10px'}}>
-                                            <CardContent>
-                                                {
-                                                    this.state.awaitingResponse ?
-                                                    <h6>Requesting data...</h6>
-                                                    :
-                                                    this.state.error != null ?
-                                                    <Error message={this.state.error.message} /> :
-
-                                                    this.state.forecast ?
-                                                    <Forecast forecast={this.state.forecast} tempSymbol={this.getSelectedUnits().tempSymbol} speedSymbol={this.getSelectedUnits().speedSymbol}/>
-                                                    :
-                                                    <h3>Enter a city to see its forecast</h3>
-                                                }
-                                            </CardContent>
-                                        </Card>
-                                    </Row>
-                                    <Row>
-                                        <Card style={{width: '98%', height: '180px', margin: 'auto', marginTop: '10px'}}>
-                                            <CardContent>
-                                                <Suggestions suggestedCities={this.state.suggestedCities} updateCityAndGetForecast={this.updateCityAndGetForecast.bind(this)} />
-                                            </CardContent>
-                                        </Card>
-                                    </Row>
-                                </Col>
-
-                                <Col md={6}>
-                                    <Card style={{height: '456px'}}>
+                                                      { unit.desc }
+                                                  </Button>))}
+                                          </ButtonGroup>
+                                      </Row>
+                                <Row>
+                                    <Card style={{width: '98%', height: '140px', margin: 'auto', marginTop: '10px'}}>
                                         <CardContent>
-                                            <Map style={{margin: 'auto'}} city={this.state.location.city} coordinates={this.state.location.coordinates}></Map>
                                             {
-                                                this.state.location.city &&
-                                                <h5> {this.state.location.city}, {this.state.location.country} </h5>
+                                                this.state.awaitingResponse ?
+                                                <h6>Requesting data...</h6>
+                                                :
+                                                this.state.error != null ?
+                                                <Error message={this.state.error.message} />
+                                                :
+                                                this.state.forecast ?
+                                                <Forecast forecast={this.state.forecast} tempSymbol={this.getSelectedUnits().tempSymbol} speedSymbol={this.getSelectedUnits().speedSymbol}/>
+                                                :
+                                                <h3>Enter a city to see its forecast</h3>
                                             }
                                         </CardContent>
                                     </Card>
-                                </Col>
-                            </Row>
-                        </CardContent>
-                    </Card>
-                </Container>
-            </div>
+                                </Row>
+                                <Row>
+                                    <Card style={{width: '98%', height: '180px', margin: 'auto', marginTop: '10px'}}>
+                                        <CardContent>
+                                            <Suggestions suggestedCities={this.state.suggestedCities} updateCityAndGetForecast={this.updateCityAndGetForecast.bind(this)} />
+                                        </CardContent>
+                                    </Card>
+                                </Row>
+                            </Col>
+
+                            <Col md={6}>
+                                <Card style={{height: '456px'}}>
+                                    <CardContent>
+                                        <Map style={{margin: 'auto'}} city={this.state.location.city} coordinates={this.state.location.coordinates}></Map>
+                                        {
+                                            this.state.location.city &&
+                                            <h5> {this.state.location.city}, {this.state.location.country} </h5>
+                                        }
+                                    </CardContent>
+                                </Card>
+                            </Col>
+                        </Row>
+                    </CardContent>
+                </Card>
+            </Container>
       );
   }
 }
