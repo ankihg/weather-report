@@ -8,7 +8,7 @@ A simple full-stack app powered by a Node/Express backend and React frontend tha
 
 
 # Run locally
-Please create a `.env` file at the root of the project defining an API key named `owmApiKey` from Open Weather Map
+First create a `.env` file at the root of the project defining an API key named `owmApiKey` from Open Weather Map
 ```
 owmApiKey=abc123
 ```
@@ -20,7 +20,7 @@ This will use ports 3000 and 3001
 # Production considerations
 - Text internationalization
 - Healthchecks for OpenWeatherMap
--
+- Improvement of city input
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

@@ -36,7 +36,7 @@ class App extends React.Component {
             awaitingResponse: false,
             suggestedCities: [ // Modified at forecast fetch to add recently searched cities
                 'Seattle, WA, US',
-                'Dubai, AE',
+                'Tokyo, JP',
                 'Perth, AU',
             ],
 
@@ -119,7 +119,6 @@ class App extends React.Component {
     }
 
     addToSuggestedCities(city) {
-        console.log('addToSuggestedCities', city);
         for (let recentCity of this.state.suggestedCities)
             if (city === recentCity) return;
 
@@ -150,10 +149,8 @@ class App extends React.Component {
                     <Card>
                         <CardContent>
                             <Row>
-
                                 <Col md={6}>
                                     <Autocomplete
-                                        id="free-solo-demo"
                                         freeSolo
                                         onChange={(evt, val) => { this.updateCityAndGetForecast.call(this, val) }}
                                         options={this.state.cityMatches.slice(0, 10000).map((c) => `${c.name}${c.state && `, ${c.state}`}, ${c.country}`)}
@@ -170,18 +167,19 @@ class App extends React.Component {
                                             )}
                                           />
 
-                                        <ButtonGroup style={{marginTop: '25px', marginLeft: '5px'}} color="primary" aria-label="outlined primary button group">
-                                            {this.state.units.map((unit, i) => (
-                                                <Button
-                                                    key={i}
-                                                    onClick={this.updateUnits.bind(this, i)}
-                                                    variant={i === this.state.selectedUnitsIndex ? "contained" : ""}>
-                                                        { unit.desc }
-                                                </Button>))}
-                                        </ButtonGroup>
-
+                                          <Row>
+                                              <ButtonGroup style={{marginTop: '25px', margin: 'auto'}} color="primary" aria-label="outlined primary button group">
+                                                  {this.state.units.map((unit, i) => (
+                                                      <Button
+                                                          key={i}
+                                                          onClick={this.updateUnits.bind(this, i)}
+                                                          variant={i === this.state.selectedUnitsIndex ? "contained" : ""}>
+                                                              { unit.desc }
+                                                      </Button>))}
+                                              </ButtonGroup>
+                                          </Row>
                                     <Row>
-                                        <Card style={{width: '98%', height: '120px', margin: 'auto'}}>
+                                        <Card style={{width: '98%', height: '140px', margin: 'auto', marginTop: '10px'}}>
                                             <CardContent>
                                                 {
                                                     this.state.awaitingResponse ?
@@ -199,7 +197,7 @@ class App extends React.Component {
                                         </Card>
                                     </Row>
                                     <Row>
-                                        <Card style={{width: '98%', height: '180px', margin: 'auto'}}>
+                                        <Card style={{width: '98%', height: '180px', margin: 'auto', marginTop: '10px'}}>
                                             <CardContent>
                                                 <Suggestions suggestedCities={this.state.suggestedCities} updateCityAndGetForecast={this.updateCityAndGetForecast.bind(this)} />
                                             </CardContent>
@@ -208,12 +206,12 @@ class App extends React.Component {
                                 </Col>
 
                                 <Col md={6}>
-                                    <Card>
+                                    <Card style={{height: '456px'}}>
                                         <CardContent>
                                             <Map style={{margin: 'auto'}} city={this.state.location.city} coordinates={this.state.location.coordinates}></Map>
                                             {
                                                 this.state.location.city &&
-                                                <h3> {this.state.location.city}, {this.state.location.country} </h3>
+                                                <h5> {this.state.location.city}, {this.state.location.country} </h5>
                                             }
                                         </CardContent>
                                     </Card>
