@@ -22,6 +22,7 @@ Then run `npm test` to run both backend and frontend tests
 ## Production considerations
 The following improvements are necessary for the project to be production worthy:
 - Healthchecks for OpenWeatherMap to know if they are experiencing an outage and report to user
+- Provide accessibility support by following the [Web Content Accessibility Guidelines](https://www.w3.org/WAI/standards-guidelines/wcag/) (a11y)
 - Associate an id with server requests for more coherent logging
 
 ## Future improvements
@@ -29,7 +30,7 @@ The following improvements are necessary for the project to be production worthy
 - Improve location input by allowing users to input coordinates or zip code
 - Optimize layout to react to mobile devices (Currently usable but not ideal)
 - Write units selection and city suggestions to local storage to load at future visits
-- Infrastructure in place for text internationalization process
+- Infrastructure in place for text localization process (i18n)
 
 ## References
 - Weather and city data is provided by [Open Weather Map](https://openweathermap.org/)
