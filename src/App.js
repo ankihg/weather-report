@@ -40,8 +40,8 @@ class App extends React.Component {
 
             cityMatches: [], // Loaded from backend at page load and input change
             suggestedCities: [ // Modified at forecast fetch to add recently searched cities
-                'Seattle, WA, US',
                 'Tokyo, JP',
+                'Seattle, WA, US',
                 'Cape Town, ZA',
             ],
             units: [
@@ -61,7 +61,6 @@ class App extends React.Component {
      }
 
      updateCity(val, next) {
-         logger.log('Update city:', val);
          this.setState({
              cityInput: val || '',
          }, () => {
@@ -77,7 +76,6 @@ class App extends React.Component {
      }
 
      updateUnits(unitsIndex) {
-         console.log(this.state.units[unitsIndex]);
          const isUnitsChanged = unitsIndex !== this.state.selectedUnitsIndex;
          this.setState({selectedUnitsIndex: unitsIndex},
              () => isUnitsChanged && this.getForecast());
