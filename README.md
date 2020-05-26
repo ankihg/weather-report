@@ -1,7 +1,7 @@
 # Weather Report
 
 ## About
-A simple full-stack app powered by a Node/Express backend and React frontend that displays weather forecasts retrieved from [Open Weather Map](https://openweathermap.org/).
+A full-stack app powered by a Node/Express backend and React frontend that displays weather forecasts sourced from [Open Weather Map](https://openweathermap.org/).
 
 
 ## Run locally
