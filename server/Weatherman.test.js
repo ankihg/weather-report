@@ -1,4 +1,5 @@
 const Weatherman = require('./Weatherman');
+const mockLogger = { log: ()=>{}, warn: ()=>{}, err: ()=>{} };
 const apiKey = 'mock-api-key';
 
 test('successfully make request to weather service', (done) => {
@@ -33,7 +34,7 @@ test('successfully make request to weather service', (done) => {
       });
   }
 
-  const weatherman = new Weatherman(apiKey, makeHttpRequest);
+  const weatherman = new Weatherman(apiKey, mockLogger, makeHttpRequest);
   weatherman.getForecast('seattle', 'metric')
     .then((resp) => {
         expect(resp.forecast.desc).toBe('light rain');
@@ -62,7 +63,7 @@ test('fail gracefully when city not found', (done) => {
         });
     }
 
-    const weatherman = new Weatherman(apiKey, makeHttpRequest);
+    const weatherman = new Weatherman(apiKey, mockLogger, makeHttpRequest);
     weatherman.getForecast('seattle', 'metric')
         .catch((resp) => {
             expect(resp.code).toBe(404);
@@ -78,7 +79,7 @@ test('fail gracefully on unknown error', (done) => {
         });
     }
 
-    const weatherman = new Weatherman(apiKey, makeHttpRequest);
+    const weatherman = new Weatherman(apiKey, mockLogger, makeHttpRequest);
     weatherman.getForecast('seattle', 'metric')
         .catch((resp) => {
             expect(resp.code).toBe(500);

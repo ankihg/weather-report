@@ -5,4 +5,7 @@ module.exports = class Logger {
     warn() {
         console.warn(...arguments);
     }
+    err() {
+        console.error(...arguments);
+    }
 }
