@@ -25,7 +25,7 @@ The following improvements are necessary for the project to be production worthy
 - Associate an id with server requests for more coherent logging
 
 ## Future improvements
-- Refresh forecast periodically to provide up-to-data data to users
+- Refresh forecast periodically to provide up-to-date data to users
 - Improve location input by allowing users to input coordinates or zip code
 - Optimize layout to react to mobile devices (Currently usable but not ideal)
 - Write units selection and city suggestions to local storage to load at future visits
