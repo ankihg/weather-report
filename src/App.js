@@ -15,6 +15,9 @@ import Forecast from './components/Forecast'
 import Error from './components/Error'
 import Suggestions from './components/Suggestions'
 
+import Logger from './utils/Logger'
+const logger = new Logger();
+
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -34,13 +37,13 @@ class App extends React.Component {
             forecast: null,
             error: null,
             awaitingResponse: false,
+
+            cityMatches: [], // Loaded from backend at page load and input change
             suggestedCities: [ // Modified at forecast fetch to add recently searched cities
                 'Seattle, WA, US',
                 'Tokyo, JP',
                 'Cape Town, ZA',
             ],
-
-            cityMatches: [], // Loaded from backend at page load and input change
             units: [
                 {desc: 'fahrenheit', tempSymbol: 'F', speedSymbol: 'miles/hour', key: 'imperial'},
                 {desc: 'celsius', tempSymbol: 'C', speedSymbol: 'meters/sec', key: 'metric'},
@@ -58,7 +61,7 @@ class App extends React.Component {
      }
 
      updateCity(val, next) {
-         console.log('Update city:', val);
+         logger.log('Update city:', val);
          this.setState({
              cityInput: val || '',
          }, () => {
@@ -81,7 +84,6 @@ class App extends React.Component {
      }
 
     getForecast() {
-        console.log('this.state.cityInput', this.state.cityInput);
         if (!this.state.cityInput) return;
         this.setState(
             {
@@ -91,7 +93,7 @@ class App extends React.Component {
                 awaitingResponse: true,
             },
             () => {
-                console.log('Requesting forecast for', this.state.cityInput, 'in', this.getSelectedUnits().key);
+                logger.log('Requesting forecast for', this.state.cityInput, 'in', this.getSelectedUnits().key);
                 fetch(`/forecast?city=${this.state.cityInput}&units=${this.getSelectedUnits().key}`)
                     .then(resp => {
                         this.setState({awaitingResponse: false});
@@ -100,7 +102,7 @@ class App extends React.Component {
                     })
                     .then(response => response.json())
                     .then((response) => {
-                        console.log('Forecast received for', this.state.cityInput, 'in', this.getSelectedUnits().key);
+                        logger.log('Forecast received for', this.state.cityInput, 'in', this.getSelectedUnits().key);
                         this.setState({
                             forecast: response.forecast,
                             location: response.location,
@@ -108,7 +110,7 @@ class App extends React.Component {
                         this.addToSuggestedCities(this.state.cityInput);
                     })
                     .catch((resp) => {
-                        console.log('Error receiving forecast for', this.state.cityInput, 'in', this.getSelectedUnits().key);
+                        logger.warn('Error receiving forecast for', this.state.cityInput, 'in', this.getSelectedUnits().key);
                         if (resp.json)
                             resp.json().then((err) => {
                                 this.setState({error: err});
