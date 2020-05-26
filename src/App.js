@@ -135,7 +135,6 @@ class App extends React.Component {
         fetch(`/cities?prefix=${prefix}`)
             .then(response => response.json())
             .then((cities) => {
-                console.log('got cities', cities.length, cities[0]);
                 this.setState({cityMatches: cities});
             })
             .catch();
@@ -160,7 +159,7 @@ class App extends React.Component {
                                             value={this.state.cityInput}
                                             placeholder={'St. Louis, MO, US'}
                                             onChange={(evt) => this.updateCity.call(this, evt.target.value)}
-                                            onKeyPress={evt => { evt.key === 'Enter' && this.getForecast.call(this) }}/>
+                                            onKeyPress={(evt) => { evt.key === 'Enter' && this.updateCityAndGetForecast.call(this, evt.target.value) }}/>
                                         )}
                                       />
 

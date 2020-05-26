@@ -2,31 +2,38 @@ const express = require('express');
 const requestPromise = require('request-promise');
 const Weatherman = require('./Weatherman');
 const LocationResolver = require('./LocationResolver');
+const Logger = require('./utils/Logger');
 
 const weatherman = new Weatherman(process.env.owmApiKey, requestPromise);
 const locationResolver = new LocationResolver(require('./resources/city.list.min'));
-console.log('ha ', locationResolver.resolve('ha ').length);
+const logger = new Logger();
 const app = express();
 
-app.get('/forecast', (req, res) => {
-    console.log('butt');
-    console.log(req.query);
-    // TODO check query params
+// Simple middleware to log request and set content-type as application/json
+app.use((req, res, next) => {
+    logger.log(`Request received for ${req.url}`);
     res.setHeader('Content-Type', 'application/json');
+    return next();
+});
+
+app.get('/forecast', (req, res) => {
+    if (!req.query.city) {
+        logger.warn('Empty `city` param on forecast request');
+        return res.status(400).send({message: 'Please specify a city to see its forecast'});
+    }
+
     weatherman.getForecast(req.query.city, req.query.units)
         .then((resp) => {
-            console.log(resp);
-            res.send(JSON.stringify(resp)); // TODO use res.json()
+            res.json(resp);
         })
         .catch((err) => {
-            console.log(err);
-            res.status(err.code).send({message: err.message}); // TODO use res.json()
+            logger.warn(`Request to weather service errored: (${err.code}) ${err.message}`);
+            res.status(err.code).json({message: err.message});
         });
 });
 
 app.get('/cities', (req, res) => {
     console.log('Get cities', req.query);
-    res.setHeader('Content-Type', 'application/json');
     // TODO check query params
     res.json(locationResolver.resolve(req.query.prefix || ''));
 });
