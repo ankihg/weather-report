@@ -10,7 +10,7 @@ First create a `.env` file at the root of the project defining an API key named 
 owmApiKey=abc123
 ```
 
-Then to serve the project locally run `npm run dev` and visit `localhost:3000`
+Make sure you `npm install`, then to serve the project locally run `npm run dev` and visit `localhost:3000`
 
 The project will use ports `3000` and `3001`
 
